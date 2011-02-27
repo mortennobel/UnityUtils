@@ -2,42 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-/**
- * Based on uniform-cost-search/A* from the book
- * Artificial Intelligence: A Modern Approach 3rd Ed by Russell/Norvig
- */
+/// <summary>
+/// Based on uniform-cost-search/A* from the book
+/// Artificial Intelligence: A Modern Approach 3rd Ed by Russell/Norvig 
+/// </summary>
 public class ShortestPathGraphSearch<State, Action> {
-	
-	class SearchNode<State,Action> : IComparable<SearchNode<State,Action>> {
-		public SearchNode<State,Action> parent;
-		
-		public State state;
-		public Action action;
-		public float g; // cost
-		public float f; // estimate
-		
-		public SearchNode(SearchNode<State,Action> parent, float g, float f, State state, Action action){
-			this.parent = parent;
-			this.g = g;
-			this.f = f;
-			this.state = state;
-			this.action = action;
-		}
-		
-		// Reverse sort order (smallest numbers first)
-	    public int CompareTo(SearchNode<State,Action> other)
-	    {
-			return other.f.CompareTo(f);
-		}
-		
-		public override string ToString() {
-			return "SN {f:"+f+", state: "+state+" action: "+action+"}";
-		}
-	}
-
-	/**
-	 * Workaround for http://monotouch.net/Documentation/Limitations#Value types as Dictionary Keys
-	 */
+	/// <summary>
+	/// Workaround for http://monotouch.net/Documentation/Limitations Value types as Dictionary Keys (iOS)
+	/// </summary>
 	class Float : IComparable<Float>{
 		public readonly float f;
 		
@@ -45,7 +17,6 @@ public class ShortestPathGraphSearch<State, Action> {
 			this.f = f;
 		}
 		
-		// Reverse sort order (smallest numbers first)
 	    public int CompareTo(Float other)
 	    {
 			return f.CompareTo(other.f);
@@ -159,5 +130,34 @@ public class ShortestPathGraphSearch<State, Action> {
 			seachNode = seachNode.parent;
 		}
 		return list;
+	}
+}
+
+class SearchNode<State,Action> : IComparable<SearchNode<State,Action>> {
+	public SearchNode<State,Action> parent;
+	
+	public State state;
+	public Action action;
+	public float g; // cost
+	public float f; // estimate
+	
+	public SearchNode(SearchNode<State,Action> parent, float g, float f, State state, Action action){
+		this.parent = parent;
+		this.g = g;
+		this.f = f;
+		this.state = state;
+		this.action = action;
+	}
+	
+	/// <summary>
+	/// Reverse sort order (smallest numbers first)
+	/// </summary>
+    public int CompareTo(SearchNode<State,Action> other)
+    {
+		return other.f.CompareTo(f);
+	}
+	
+	public override string ToString() {
+		return "SN {f:"+f+", state: "+state+" action: "+action+"}";
 	}
 }

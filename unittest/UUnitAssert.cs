@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System;
 
+/// <summary>
+/// Allows writing assertions easily into your code.
+/// Note you can also use the class Assert as a shorthand for this class
+/// </summary>
 public class UUnitAssert  {
 
 	public static void True(bool boolean, string msg){

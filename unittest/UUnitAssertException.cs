@@ -2,9 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System;
 
+/// <summary>
+/// Exception thrown when assertions are false
+/// </summary>
 public class UUnitAssertException : Exception {
-	//private T expected;
-	//private T actual;
+	
 	private string msg;
 	public UUnitAssertException(object expected, object actual, string msg){
 		this.Expected = expected;

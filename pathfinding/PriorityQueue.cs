@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-/**
- * Based on http://blogs.msdn.com/b/ericlippert/archive/2007/10/08/path-finding-using-a-in-c-3-0-part-three.aspx
- * Backported to C# 2.0
- */
+/// <summary>
+/// Based on http://blogs.msdn.com/b/ericlippert/archive/2007/10/08/path-finding-using-a-in-c-3-0-part-three.aspx
+/// Backported to C# 2.0
+/// </summary>
 public class PriorityQueue<P, V>
 {
     private SortedDictionary<P, LinkedList<V>> list = new SortedDictionary<P, LinkedList<V>>();

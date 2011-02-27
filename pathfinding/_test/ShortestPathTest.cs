@@ -2,10 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-/**
- * A test case for pathfinding
- * Depends on the UnitTest4U (https://github.com/mortennobel/UnitTest4U)
- */
+/// <summary>
+/// A test case for pathfinding
+/// </summary>
 public class ShortestPathTest : UUnitTestCase, IShortestPath<Vector2i, Vector2i> {
 	private bool moveDiagonal = true;
 	public void TestNoObstacles () {

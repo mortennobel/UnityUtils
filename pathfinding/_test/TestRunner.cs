@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-/**
- * A test runner for pathfinding
- * Depends on the UnitTest4U (https://github.com/mortennobel/UnitTest4U)
- */
+/// <summary>
+/// A test runner for pathfinding
+/// </summary>
 public class TestRunner : MonoBehaviour {
-
-	// Use this for initialization
+	
+	/// <summary>
+	/// Initialization
+	/// </summary>
 	void Start () {
 		UUnitTestSuite suite = new UUnitTestSuite();
 		suite.Add(typeof(PriorityQueueTest));

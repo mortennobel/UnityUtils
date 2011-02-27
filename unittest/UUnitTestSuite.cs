@@ -4,6 +4,9 @@ using System.Reflection;
 using System.Collections.Generic;
 using System;
 
+/// <summary>
+/// Test suite that contains a number of unit tests.
+/// </summary>
 public class UUnitTestSuite {
 	private List<Type> testCases = new List<Type>();
 	

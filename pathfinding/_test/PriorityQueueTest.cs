@@ -1,10 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-/**
- * A test case for PriorityQueue
- * Depends on the UnitTest4U (https://github.com/mortennobel/UnitTest4U)
- */
+/// <summary>
+/// A test case for PriorityQueue
+/// </summary>
 public class PriorityQueueTest  : UUnitTestCase {
 	public void TestSimple () {
 		PriorityQueue<int,string> testQueue = new PriorityQueue<int,string>();

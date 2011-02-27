@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// A integer 2D vector class
+/// </summary>
 [System.Serializable]
 public class Vector2i {
 	public int x;

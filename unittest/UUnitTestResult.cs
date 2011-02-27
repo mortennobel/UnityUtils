@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Unit test result
+/// </summary>
 public class UUnitTestResult {
 	private int runCount;
 	private int failedCount;
