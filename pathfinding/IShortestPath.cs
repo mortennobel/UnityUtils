@@ -12,7 +12,7 @@ public interface IShortestPath<State,Action> {
 	float Heuristic(State fromLocation, State toLocation);
 	
 	/// <summary>
-	/// Return the legal moves from position
+	/// Return the legal moves from a state
 	/// </summary>
 	List<Action> Expand(State position);
 	
