@@ -30,6 +30,9 @@ public class MeshDebug : MonoBehaviour {
 		displayLengthScale = Mathf.Max(Mathf.Epsilon,displayLengthScale);// ensure never negative length
 		Mesh mesh = meshFilter.sharedMesh;
 		if (mesh==null){
+			if (Application.isPlaying){
+				mesh = meshFilter.mesh;
+			}
 			Debug.LogWarning("Cannot find mesh");
 			return;
 		}
