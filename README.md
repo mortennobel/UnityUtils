@@ -17,4 +17,5 @@ The best way to install UnityUtils:
 ## License
 
 Copyright Morten Nobel-Joergensen (http://www.nobel-joergensen.com)
+
 License lgpl 3.0 (http://www.gnu.org/licenses/lgpl-3.0.txt)
