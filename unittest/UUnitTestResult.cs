@@ -41,6 +41,20 @@ public class UUnitTestResult {
 		
 		return summary;
     }
+	
+	public string ShortSummary(){
+		string summary = "";
+		foreach (TestResultEntry tre in  resultList){
+			if (!tre.IsSuccess())
+				summary += tre.ToString(true)+"\n";
+		}
+		foreach (TestResultEntry tre in  resultList){
+			if (tre.IsSuccess())
+				summary += tre.ToString(true)+"\n";
+		}
+		
+		return summary;
+	}
 }
 
 class TestResultEntry{
@@ -60,13 +74,18 @@ class TestResultEntry{
 		this.errormsg = errormsg;
 	}
 	
-	public new string ToString(){
-		return (success?
+	public new string ToString(bool shortSummary = false){
+		string res = (success?
 		        "SUCCESS ":
-		        "FAIL    ")+className+"."+methodName+" duration: "+duration+" "+
-			(exception!=null?exception.Details():(errormsg!=null?errormsg:""));
+		        "FAIL    ")+className+"."+methodName+" duration: "+duration+" ";
+		if (!shortSummary) {
+			res += (exception!=null?exception.Details():(errormsg!=null?errormsg:""));
+		}
+		return res;
 	}
 				
+	
+	
 	public bool IsSuccess(){
 		return success;
 	}
