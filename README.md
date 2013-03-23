@@ -3,7 +3,7 @@ UnityUtils -- Script utils for Unity
 
 ## DESCRIPTION
 
-UnityUtils is a collection of reuseable C# classes for use in the Unity 3.x Game engine.
+UnityUtils is a collection of reuseable C# classes for use in the Unity 3.x and 4.x Game engine.
 
 Most classes are selfcontained, but some depends on other classes in the library.
 
