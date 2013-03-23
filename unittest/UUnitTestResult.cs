@@ -79,7 +79,12 @@ class TestResultEntry{
 		        "SUCCESS ":
 		        "FAIL    ")+className+"."+methodName+" duration: "+duration+" ";
 		if (!shortSummary) {
-			res += (exception!=null?exception.Details():(errormsg!=null?errormsg:""));
+			res += "\n"+(exception!=null?exception.Details():(errormsg!=null?errormsg:""));
+		} else {
+			bool hasErrorMsg = errormsg != null && errormsg.Length > 0;
+			if (hasErrorMsg) {
+				res += "\n"+errormsg;
+			}
 		}
 		return res;
 	}
