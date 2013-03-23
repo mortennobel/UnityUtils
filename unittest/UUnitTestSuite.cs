@@ -54,12 +54,14 @@ public class UUnitTestSuite {
 								ae = e.InnerException as UUnitAssertException;
 								success = false;
 								if (ae==null){
-									errMsg = "\nException during execution:\n"+e.InnerException.ToString();
+									errMsg = e.InnerException.ToString();
+								} else {
+									errMsg = ae.Message;
 								}
 							} catch (System.Exception ex) {
 								stopTime1 = DateTime.Now;
 								success = false;
-								errMsg = "\nException during execution:\n"+ex.ToString();
+								errMsg = ex.ToString();
 								
 							}
 							TimeSpan duration1 = stopTime1 - startTime1;
