@@ -86,9 +86,9 @@ public class ShortestPathGraphSearch<State, Action> {
 
 		frontierMap.Add(fromState, startNode);
 
-		while (true){
-			if (frontier.IsEmpty) return null;
+		while (!frontier.IsEmpty){
 			SearchNode<State,Action> node = frontier.Dequeue();
+			frontierMap.Remove(node.state);
 			
 			if (node.state.Equals(toState)) return BuildSolution(node);
 			exploredSet.Add(node.state);
@@ -105,7 +105,7 @@ public class ShortestPathGraphSearch<State, Action> {
 #else
 					frontier.Enqueue(searchNode,searchNode.f);
 #endif
-					exploredSet.Add(child);
+					frontierMap.Add(child, searchNode);
 				} else if (isNodeInFrontier) {
 					SearchNode<State,Action> searchNode = CreateSearchNode(node, action, child, toState);
 					if (frontierNode.f>searchNode.f){
@@ -118,6 +118,8 @@ public class ShortestPathGraphSearch<State, Action> {
 				}
 			}
 		}
+
+		return null;
 	}
 	
 	private SearchNode<State,Action> CreateSearchNode(SearchNode<State,Action> node, Action action, State child, State toState){
