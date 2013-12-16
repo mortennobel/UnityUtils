@@ -49,7 +49,7 @@ public class PriorityQueue<P, V>
 		v.Remove(value);
 
 		if (v.Count == 0){ // nothing left of the top priority.
-			list.Remove(key);
+			list.Remove(oldPriority);
 		}
 
 		Enqueue(value, newPriority);
