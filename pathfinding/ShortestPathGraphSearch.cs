@@ -114,6 +114,8 @@ public class ShortestPathGraphSearch<State, Action> {
 #else
 						frontier.Replace(frontierNode,frontierNode.f, searchNode.f);
 #endif
+                        // reset f on the frontier node to made it's new position in the priority queue
+                        frontierNode.f = searchNode.f;
 					}
 				}
 			}
