@@ -53,7 +53,7 @@ public class UUnitAssert  {
 		Error(expected, actual, msg);
 	}
 	
-	public static new void Equals(Vector3 expected, Vector3 actual){
+	public static void Equals(Vector3 expected, Vector3 actual){
 		Equals(expected, actual,"");
 	}
 	
