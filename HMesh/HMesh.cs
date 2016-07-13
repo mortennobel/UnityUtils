@@ -88,6 +88,29 @@ public class HMesh {
 		return newMesh;
 	}
 
+	public Face CreateTriangle(Vector3 p1, Vector3 p2, Vector3 p3){
+		var face = CreateFace();
+		var edges = new Halfedge[]{
+			CreateHalfedge(),
+			CreateHalfedge(),
+			CreateHalfedge()
+		};
+		var verts = new Vertex[]{
+			CreateVertex(p1),
+			CreateVertex(p2),
+			CreateVertex(p3),
+		};
+		for (int i=0;i<3;i++){
+			edges[i].Link(face);
+			edges[i].next = edges[(i+1)%3];
+			edges[(i+1)%3].prev = edges[i];
+
+			edges[i].vert = verts[i];
+			verts[i].halfedge = edges[i].next;
+		}
+		return face;
+	}
+
 	public static HMesh CreateTestMesh() {
 		HMesh mesh = new HMesh();
 		GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -99,25 +122,7 @@ public class HMesh {
 
 	public static HMesh CreateTestMeshTriangle() {
 		HMesh mesh = new HMesh();
-		var face = mesh.CreateFace();
-		var edges = new Halfedge[]{
-			mesh.CreateHalfedge(),
-			mesh.CreateHalfedge(),
-			mesh.CreateHalfedge()
-		};
-		var verts = new Vertex[]{
-			mesh.CreateVertex(new Vector3(0,0,0)),
-			mesh.CreateVertex(new Vector3(1,0,0)),
-			mesh.CreateVertex(new Vector3(0,0,1)),
-		};
-		for (int i=0;i<3;i++){
-			edges[i].Link(face);
-			edges[i].next = edges[(i+1)%3];
-			edges[(i+1)%3].prev = edges[i];
-
-			edges[i].vert = verts[i];
-			verts[i].halfedge = edges[i].next;
-		}
+		mesh.CreateTriangle(new Vector3(0,0,0),new Vector3(1,0,0),new Vector3(0,0,1));
 		return mesh;
 	}
 

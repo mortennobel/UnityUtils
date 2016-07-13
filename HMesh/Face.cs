@@ -137,47 +137,46 @@ public class Face : System.IEquatable<Face> {
 		Vertex v = hmesh.CreateVertex();
 
 		List<Halfedge> newHalfedges = new List<Halfedge>();
-
-		foreach (var heIter in Circulate()){
-			v.position += heIter.vert.position;
-			v.uv1 += heIter.vert.uv1;
-			v.uv2 += heIter.vert.uv2;
+		List<Vertex> vertices = new List<Vertex>();
+		// create double halfedges
+		foreach (var he in Circulate()){
+			v.position += he.vert.position;
+			v.uv1 += he.vert.uv1;
+			v.uv2 += he.vert.uv2;
 
 			Halfedge toNewVertex = hmesh.CreateHalfedge();
 			Halfedge fromNewVertex = hmesh.CreateHalfedge();
 			toNewVertex.Glue(fromNewVertex);
 			newHalfedges.Add(toNewVertex);
+			vertices.Add(he.vert);
 		}
 		int count = 0;
 
-		bool first = true;
+
 		// second iteration - link everything together
-		foreach (var heIter in Circulate()){
-			Halfedge prevNewEdge = newHalfedges[(count-1+newHalfedges.Count)%newHalfedges.Count];
+		foreach (var he in Circulate()){
+			Vertex prevVertex = vertices[(count-1+newHalfedges.Count)%newHalfedges.Count];
+			Vertex nextVertex = vertices[count];
+			Halfedge prevNewOppEdge = newHalfedges[(count-1+newHalfedges.Count)%newHalfedges.Count].opp;
 			Halfedge newEdge = newHalfedges[count];
 			// link halfedges
-			newEdge.opp.Link(heIter.next);
-			heIter.Link(newEdge);
-			newEdge.Link(prevNewEdge.opp);
+			newEdge.Link(prevNewOppEdge);
+			prevNewOppEdge.Link(he);
+			he.Link(newEdge);
 
 			// link vertices
-			newEdge.opp.vert = heIter.vert;
-			heIter.vert.halfedge = newEdge.opp.next;
 			newEdge.vert = v;
-			v.halfedge = newEdge.next;
+			v.halfedge = prevNewOppEdge;
+			prevNewOppEdge.vert = prevVertex;
 
+			bool first = count==0;
+			Face f = he.face;
 			if (!first){
-				Face newFace = hmesh.CreateFace();
-				newFace.halfedge = heIter;
-				newFace.ReassignFaceToEdgeLoop();
-			}
+				f = hmesh.CreateFace();
+			} 
+			f.halfedge = he;
+			f.ReassignFaceToEdgeLoop();
 
-			Halfedge toNewVertex = hmesh.CreateHalfedge();
-			Halfedge fromNewVertex = hmesh.CreateHalfedge();
-			toNewVertex.Glue(fromNewVertex);
-			newHalfedges.Add(toNewVertex);
-			
-			first = false;
 			count++;
 		}
 

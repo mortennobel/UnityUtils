@@ -63,7 +63,9 @@ public class Halfedge  : System.IEquatable<Halfedge>  {
 		if (face.NoEdges() != 3 || opp.face.NoEdges() != 3){
 			Debug.LogError("Can only flip edge between two triangles");
 		}
+		Debug.Assert(hmesh.IsValid());
 		#endif
+
 		Halfedge oldNext = next;
 		Halfedge oldPrev = prev;
 		Halfedge oldOppNext = opp.next;
@@ -75,22 +77,31 @@ public class Halfedge  : System.IEquatable<Halfedge>  {
 		Vertex oppOppositeVert = opp.next.vert;
 
 		// flip halfedges
+		oldOppNext.Link(this);
 		this.Link(oldPrev);
+
 		oldNext.Link(opp);
 		opp.Link(oldOppPrev);
-		oldOppNext.Link(this);
 
 		oldOppPrev.Link(oldNext);
 		oldPrev.Link (oldOppNext);
 
 		// reassign vertices
 		this.vert = thisOppositeVert;
-		thisOppositeVert.halfedge = this.next;
+		thisOppositeVert.halfedge = oldPrev;
 		opp.vert = oppOppositeVert;
-		oppOppositeVert.halfedge = opp.next;
+		oppOppositeVert.halfedge = oldOppPrev;
+		thisOppositeVert.halfedge = oldPrev;
+		thisVert.halfedge = oldNext;
+		oppVert.halfedge = oldOppNext;
 
+		face.halfedge = this;
 		face.ReassignFaceToEdgeLoop();
+		opp.face.halfedge = opp;
 		opp.face.ReassignFaceToEdgeLoop();
+		#if UNITY_EDITOR	
+		Debug.Assert(hmesh.IsValid());
+		#endif
 	}
 
 	public bool IsBoundary(){
@@ -187,6 +198,14 @@ public class Halfedge  : System.IEquatable<Halfedge>  {
 		bool valid = true;
 		if (opp != null && opp.opp != this){
 			Debug.LogWarning("opp is different from this or null");
+			valid = false;
+		}
+		if (opp != null && vert == opp.vert){
+			Debug.LogWarning("opp is has same vertex as this");
+			valid = false;
+		}
+		if (opp != null && face == opp.face){
+			Debug.LogWarning("opp is has same face as this");
 			valid = false;
 		}
 		if (prev.next != this){

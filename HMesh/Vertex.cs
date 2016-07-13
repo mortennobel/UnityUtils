@@ -150,7 +150,7 @@ public class Vertex : System.IEquatable<Vertex> {
 		}
 
 		if (halfedge.prev.vert != this){
-			Debug.LogWarning("Vertex is not correctly associated with halfedge.");
+			Debug.LogWarning("Vertex "+position+" is not correctly associated with halfedge. Points to edge "+halfedge.prev.vert.position+" to "+halfedge.vert.position);
 			valid = false;
 		}
 		return valid;
