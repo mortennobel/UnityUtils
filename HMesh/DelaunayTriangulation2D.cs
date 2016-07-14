@@ -44,19 +44,10 @@ public class DelaunayTriangulation2D {
 		Vector3 p3 = e.next.next.vert.position;
 		Vector3 p4 = e.opp.next.vert.position;
 
-		return InCircle(p1,p2,p3,p4) || InCircle(p2,p1,p4,p2);
+		return HMeshMath.InCircle(p1,p2,p3,p4) || HMeshMath.InCircle(p2,p1,p4,p2);
 	}
 
-	static bool InCircle(Vector3 p1,Vector3 p2,Vector3 p3,Vector3 p4){
-		Matrix4x4 m = new Matrix4x4();
-		Vector3[] a = new Vector3[]{
-			p1,p2,p3,p4
-		};
-		for (int i=0;i<4;i++){
-			m.SetRow(i, new Vector4(a[i].x,a[i].y,a[i].x*a[i].x+a[i].y*a[i].y,1));
-		}
-		return m.determinant<0;
-	}
+
 
 	static void InsertPointInTriangle(Face triangle, Vector3 point){
 		triangle.Split().position = point;
@@ -96,7 +87,7 @@ public class DelaunayTriangulation2D {
 			var p2 = edges[1].vert.position;
 			var p3 = edges[2].vert.position;
 			Debug.LogWarning("Points "+p1+", "+p2+", "+p3);
-			if (LeftOf(p1,p2,pos) && LeftOf(p2,p3,pos) && LeftOf(p3,p1,pos)){
+			if (HMeshMath.LeftOf(p1,p2,pos) && HMeshMath.LeftOf(p2,p3,pos) && HMeshMath.LeftOf(p3,p1,pos)){
 				return face;
 			}
 		}
@@ -104,11 +95,5 @@ public class DelaunayTriangulation2D {
 		return null;
 	}
 
-	static bool LeftOf(Vector3 p1, Vector3 p2, Vector3 p3){
-		Matrix3x3 mat = Matrix3x3.zero;
-		mat.SetRow(0,new Vector3(1,p1.x, p1.y));
-		mat.SetRow(1,new Vector3(1,p2.x, p2.y));
-		mat.SetRow(2,new Vector3(1,p3.x, p3.y));
-		return mat.determinant > 0;
-	}
+
 }
