@@ -85,8 +85,10 @@ public class ShortestPathGraphSearch<State, Action> {
 #endif
 
 		frontierMap.Add(fromState, startNode);
-
-		while (!frontier.IsEmpty){
+	    int shortCircuit = 0;
+		while (!frontier.IsEmpty)
+		{
+		    shortCircuit++;
 			SearchNode<State,Action> node = frontier.Dequeue();
 			frontierMap.Remove(node.state);
 			
@@ -114,9 +116,17 @@ public class ShortestPathGraphSearch<State, Action> {
 #else
 						frontier.Replace(frontierNode,frontierNode.f, searchNode.f);
 #endif
+                        // reset f on the frontier node to made it's new position in the priority queue
+                        frontierNode.f = searchNode.f;
 					}
 				}
 			}
+
+		    if (shortCircuit > 3000)
+		    {
+                DebugLog.Log("Short circuiting pathfinder, took more than 3000 tries");
+		        break;
+		    }
 		}
 
 		return null;

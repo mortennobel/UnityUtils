@@ -74,7 +74,7 @@ class TestResultEntry{
 		this.errormsg = errormsg;
 	}
 	
-	public new string ToString(bool shortSummary = false){
+	public string ToString(bool shortSummary = false){
 		string res = (success?
 		        "SUCCESS ":
 		        "FAIL    ")+className+"."+methodName+" duration: "+duration+" ";
