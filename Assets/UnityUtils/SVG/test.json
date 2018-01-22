@@ -1,0 +1,63 @@
+{'Name': 'BSPTree',
+'Node':
+{'plane':'Plane normal: (1, 0, 0) dist 1.4300000667572021',
+'triangles':'',
+'left':{'plane':'Plane normal: (0, 1, 0) dist 0.81999999284744263',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 1.3200000524520874',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 0.31999993324279785',
+'triangles':'',
+'left':null,
+'right':null
+}
+}
+},
+'right':{'plane':'Plane normal: (1, 0, 0) dist 1.9300000667572021',
+'triangles':'',
+'left':{'plane':'Plane normal: (0, 1, 0) dist 0.81999999284744263',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 1.3200000524520874',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 0.31999993324279785',
+'triangles':'',
+'left':null,
+'right':null
+}
+}
+},
+'right':{'plane':'Plane normal: (1, 0, 0) dist 0.93000006675720215',
+'triangles':'',
+'left':{'plane':'Plane normal: (0, 1, 0) dist 0.81999999284744263',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 1.3200000524520874',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 0.31999993324279785',
+'triangles':'',
+'left':null,
+'right':null
+}
+}
+},
+'right':{'plane':'Plane normal: (0, 1, 0) dist 0.81999999284744263',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 1.3200000524520874',
+'triangles':'',
+'left':null,
+'right':{'plane':'Plane normal: (0, 1, 0) dist 0.31999993324279785',
+'triangles':'',
+'left':null,
+'right':null
+}
+}
+}
+}
+}
+}}
