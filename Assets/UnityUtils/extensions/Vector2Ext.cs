@@ -1,5 +1,12 @@
 ﻿using UnityEngine;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 public static class Vector2Ext {
 	public static Vector2 Rotate(this Vector2 v, float radians) {
 		float sin = Mathf.Sin(radians);

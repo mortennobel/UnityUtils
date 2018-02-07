@@ -1,7 +1,9 @@
-﻿/// UnityUtils https://github.com/mortennobel/UnityUtils
-/// By Morten Nobel-Jørgensen
-/// License lgpl 3.0 (http://www.gnu.org/licenses/lgpl-3.0.txt)
-
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
 public struct IntPair  : System.IEquatable<IntPair>{
 	public readonly int first;
 	public readonly int second;

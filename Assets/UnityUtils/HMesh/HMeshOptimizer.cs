@@ -1,6 +1,13 @@
 ﻿using System.Collections.Generic;
 using Priority_Queue;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 // C# port of https://github.com/janba/GEL/blob/master/src/GEL/HMesh/mesh_optimization.h
 
 public abstract class EnergyFun

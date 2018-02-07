@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 // http://stackoverflow.com/questions/15281616/take-slice-from-2d-array-int-using-linq-in-c-sharp
 public static class Ext
 {

@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 public class GUIController : MonoBehaviour
 {
     public HMesh hmesh;

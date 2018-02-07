@@ -1,6 +1,13 @@
 ﻿using System.IO;
 using System;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 public static class BinaryReaderExt {
 	public static int ReadInt32BE(this BinaryReader b)
 	{

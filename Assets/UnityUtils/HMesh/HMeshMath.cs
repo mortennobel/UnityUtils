@@ -1,4 +1,11 @@
-﻿public static class HMeshMath {
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
+public static class HMeshMath {
 	// determines if the point p3 lies to the left of the line spanned by p1 and p2.
     public static bool LeftOfXY(Vector3D p1, Vector3D p2, Vector3D p3){
 		Matrix3x3D mat = Matrix3x3D.zero;

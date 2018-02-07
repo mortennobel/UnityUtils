@@ -1,5 +1,12 @@
 using UnityEngine;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 public static class DebugExt {
 	public static void DrawPlane (Plane plane, Vector3 centerPosition, Color color, float duration = 0, float length = 10.0f)
 	{

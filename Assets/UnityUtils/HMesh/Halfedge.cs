@@ -1,7 +1,9 @@
-﻿/// UnityUtils https://github.com/mortennobel/UnityUtils
-/// By Morten Nobel-Jørgensen
-/// License lgpl 3.0 (http://www.gnu.org/licenses/lgpl-3.0.txt)
-
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
 using System;
 using UnityEngine;
 using System.Collections.Generic;

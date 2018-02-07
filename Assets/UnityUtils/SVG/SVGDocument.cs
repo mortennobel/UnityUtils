@@ -1,4 +1,11 @@
-﻿using System.IO;
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
+using System.IO;
 using System.Xml;
 
 public class SVGDocument : SVGNode

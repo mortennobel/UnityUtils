@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
+using UnityEngine;
 
 public struct Matrix3x3 {
 	// Matrices in unity are column major. Data is accessed as: row + (column*3).

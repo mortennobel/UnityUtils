@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
+using System;
 
 public struct Matrix4x4D {
 	// Matrices in unity are column major. Data is accessed as: row + (column*3).

@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 public abstract class Heap<T> : IEnumerable<T>
 {
 	private const int InitialCapacity = 0;

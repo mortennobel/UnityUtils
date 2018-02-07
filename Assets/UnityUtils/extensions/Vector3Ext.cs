@@ -1,5 +1,12 @@
 ﻿using UnityEngine;
 
+/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
 public static class Vector3Ext {
     // rotate a point arount a line (defined by a pivot point and a direction)
 	public static Vector3 RotateAround(this Vector3 inputPoint, Vector3 pivotPoint, Vector3 direction, float degrees) {

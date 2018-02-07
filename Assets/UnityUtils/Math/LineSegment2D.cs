@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
+using UnityEngine;
 
 // http://martin-thoma.com/how-to-check-if-two-line-segments-intersect/
 public class LineSegment2D  {

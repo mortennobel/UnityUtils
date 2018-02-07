@@ -1,4 +1,11 @@
-﻿public class SVGGroup : SVGNode{
+﻿/*
+ *  UnityUtils (https://github.com/mortennobel/UnityUtils)
+ *
+ *  Created by Morten Nobel-Jørgensen ( http://www.nobel-joergnesen.com/ )
+ *  License: MIT
+ */
+
+public class SVGGroup : SVGNode{
 
     public SVGGroup(SVGNode parent, string name) : base(parent)
     {
