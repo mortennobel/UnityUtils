@@ -63,7 +63,6 @@ public class HMeshRenderer : MonoBehaviour {
 	        Gizmos.color = colors[i];
 	        Gizmos.DrawWireMesh(mesh, i, transform.position, transform.rotation, transform.localScale);
 	    }
-
 	}
 
 	// Update is called once per frame

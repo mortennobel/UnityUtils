@@ -20,15 +20,38 @@ public class ConvexHull {
 			}
 		}
 		int pointOnHull = leftMostPoint;
-		Debug.Log("leftMostPoint "+leftMostPoint);
-		int endPoint = 0;
+ 		int endPoint = 0;
 		List<Vector3D> res = new List<Vector3D>();
 		do {
-			Debug.Log("Add "+pointOnHull);
 			res.Add(positions[pointOnHull]);
 			endPoint = pointOnHull==0?1:0;
 			for (int j = 0;j<positions.Count;j++){
 				if (j != pointOnHull && HMeshMath.LeftOfXY(positions[pointOnHull], positions[endPoint], positions[j])){
+					endPoint = j;
+				} 
+			}
+			pointOnHull = endPoint;
+		} while (endPoint != leftMostPoint);
+		return res;
+	}
+
+// Aka Jarvis march
+	public static List<Vector3D> GiftWrappingXZ(List<Vector3D> positions) {
+		// Find leftmost point
+		int leftMostPoint = 0;
+		for (int i=1;i<positions.Count;i++){
+			if (positions[i].x < positions[leftMostPoint].x){
+				leftMostPoint = i;
+			}
+		}
+		int pointOnHull = leftMostPoint;
+		int endPoint = 0;
+		List<Vector3D> res = new List<Vector3D>();
+		do {
+			res.Add(positions[pointOnHull]);
+			endPoint = pointOnHull==0?1:0;
+			for (int j = 0;j<positions.Count;j++){
+				if (j != pointOnHull && HMeshMath.LeftOfXZ(positions[pointOnHull], positions[endPoint], positions[j])){
 					endPoint = j;
 				} 
 			}

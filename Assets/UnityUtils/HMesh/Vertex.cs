@@ -146,13 +146,15 @@ public class Vertex : System.IEquatable<Vertex>, IBounds, IComparable<Vertex>
         return res;
     }
 
-    // If boundary vertex with only two edges removes the vertex and one edge.
+    // If boundary vertex Dissolve face.
     // Otherwise return false
     public bool Dissolve()
     {
         List<Halfedge> hes = Circulate();
-        if (IsBoundary() && hes.Count == 1)
-        {
+	    if (!IsBoundary()) {
+		    return false;
+	    }
+        if (hes.Count == 1) {
             var faceEdges = halfedge.face.Circulate();
             if (faceEdges.Count > 2)
             {
@@ -164,15 +166,12 @@ public class Vertex : System.IEquatable<Vertex>, IBounds, IComparable<Vertex>
                 oldHe.face.halfedge = prev;
                 hmesh.Destroy(oldHe);
                 hmesh.Destroy(this);
-                return true;
             }
             else
             {
                 halfedge.face.Dissolve2Edges();
             }
-        }
-        if (IsBoundary() && hes.Count == 2)
-        {
+        } else if (hes.Count == 2) {
             foreach (var he in hes)
             {
                 if (he.opp != null)
@@ -180,11 +179,17 @@ public class Vertex : System.IEquatable<Vertex>, IBounds, IComparable<Vertex>
                     var newPos = he.vert.positionD;
                     var vertex = he.Collapse();
                     vertex.positionD = newPos;
-                    break;
+	                return true;
                 }
             }
+        } else {
+	        // iterate each neighbour face
+	        foreach (var faceHe in hes)
+	        {
+		        faceHe.face.Dissolve();
+	        }
         }
-        return false;
+	    return true;
     }
 
     public bool IsBoundary(){

@@ -24,12 +24,13 @@ public class DelaunayTriangulation2D
 		HMesh mesh = new HMesh();
 		Stack<Halfedge> flipStack = new Stack<Halfedge>();
 
-		CreateBoundingTriangle(mesh, positions);
-
-        foreach (var pos in positions) {
-			var triangle = FindTriangleWithinPoint(mesh, pos);
+		var outerVerts = CreateBoundingTriangle(mesh, positions);
+	    
+        foreach (var pos in positions)
+        {
+	    	var triangle = FindTriangleWithinPoint(mesh, pos);
 			AddEdgesToFlipStack(triangle, flipStack);
-			bool inserted = InsertPointInTriangle(triangle, pos);
+			bool inserted = InsertPointInTriangle(triangle, pos,flipStack);
             if (!inserted)
             {
                 continue;
@@ -40,12 +41,24 @@ public class DelaunayTriangulation2D
                 var opp = e.opp;
                 var check1 = opp.next;
                 var check2 = check1.next;
+                var check3 = e.next;
+                var check4 = check3.next;
                 if (!e.FlipPrecondition()) continue;
                 flipStack.Push(check1);
                 flipStack.Push(check2);
+                flipStack.Push(check3);
+                flipStack.Push(check4);
                 e.Flip();
             }
 		}
+
+	    foreach (var vert in outerVerts)
+	    {
+		    foreach (var he in vert.Circulate())
+		    {
+				//he.face.Dissolve();    
+		    }
+	    }
 
 		return mesh;
 	}
@@ -60,7 +73,7 @@ public class DelaunayTriangulation2D
 	    var p4 = e.opp.next.vert.positionD;
 	    if (projectPlane == ProjectionPlane.XZ)
 	    {
-	        return HMeshMath.InCircleXZ(p1, p2, p3, p4) || HMeshMath.InCircleXZ(p2, p1, p4, p2);
+	        return HMeshMath.InCircleXZ(p1, p2, p3, p4) || HMeshMath.InCircleXZ(p3, p1, p4, p2);
 	    }
 	    else
 	    {
@@ -69,7 +82,7 @@ public class DelaunayTriangulation2D
 	    }
 	}
 
-	static bool InsertPointInTriangle(Face triangle, Vector3D point)
+	static bool InsertPointInTriangle(Face triangle, Vector3D point, Stack<Halfedge> flipStack)
 	{
 	    var minVertexDistance2 = minVertexDistance * minVertexDistance;
 	    foreach (var he in triangle.Circulate())
@@ -79,8 +92,15 @@ public class DelaunayTriangulation2D
 	            return false;
 	        }
 	    }
-		triangle.Split().positionD = point;
-	    return true;
+		var vertex =triangle.Split(); 
+		vertex.positionD = point;
+
+		foreach (var e in vertex.Circulate())
+		{
+			flipStack.Push(e);			
+		}
+
+		return true;
 	}
 
 	static List<Vertex> CreateBoundingTriangle(HMesh mesh, List<Vector3D> position) {
@@ -89,27 +109,17 @@ public class DelaunayTriangulation2D
 			b.Encapsulate(position[i]);
 		}
 		// encapsulate triangle
-		b.center = b.center + b.extents*1.25f;
-		b.extents = b.extents*40.0f;
+		
+		b.center = b.center + b.extents*3.1f;
+		b.extents = b.extents*10000f;
 		Vector3D v1 = b.min;
-	    Vector3D v2 = b.min + Vector3D.right * b.size.x;
-	    Vector3D v3;
-	    if (projectPlane == ProjectionPlane.XZ)
-	    {
-	        // ensure normal pointing upwards
-	        var tmp = b.min + Vector3D.forward * b.size.z;
-	        v3 = v2;
-	        v2 = tmp;
-	    }
-	    else
-	    {
-	        Debug.LogError("Not implemented");
-	        v3 = v2;
-	    }
+		Vector3D v2 = b.min + Vector3D.forward * b.size.z;
+		Vector3D v3 = b.min + Vector3D.right * b.size.x;
+	    
+	    
 	    Face face = mesh.CreateTriangle(v1, v2, v3);
 		List<Vertex> boundingVertices = new List<Vertex>();
 		foreach (var he in face.Circulate()){
-			//Gizmos.DrawLine(he.vert.position, he.next.vert.position);
 			boundingVertices.Add(he.vert);
 		}
 		return boundingVertices;
@@ -130,7 +140,8 @@ public class DelaunayTriangulation2D
 
         if (projectPlane == ProjectionPlane.XZ)
         {
-            if (HMeshMath.RightOfXZ(p1, p2, pos) && HMeshMath.RightOfXZ(p2, p3, pos) &&
+            if (HMeshMath.RightOfXZ(p1, p2, pos) && 
+                HMeshMath.RightOfXZ(p2, p3, pos) &&
                 HMeshMath.RightOfXZ(p3, p1, pos))
             {
                 return true;

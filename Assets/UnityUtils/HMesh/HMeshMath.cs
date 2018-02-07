@@ -5,6 +5,8 @@
  *  License: MIT
  */
 
+using UnityEngine;
+
 public static class HMeshMath {
 	// determines if the point p3 lies to the left of the line spanned by p1 and p2.
     public static bool LeftOfXY(Vector3D p1, Vector3D p2, Vector3D p3){
@@ -50,10 +52,10 @@ public static class HMeshMath {
     public static bool InCircleXZ(Vector3D p1,Vector3D p2,Vector3D p3,Vector3D p4){
         Matrix4x4D m = Matrix4x4D.identity;
         Vector3D[] a = {
-            p1,p2,p3,p4
+            p1,p2,p3,p4, 
         };
         for (int i=0;i<4;i++){
-            m.SetRow(i, new Vector4D(a[i].x,a[i].z,a[i].x*a[i].x+a[i].z*a[i].z,1));
+            m.SetRow(i, new Vector4D(a[i].x,a[i].z,(a[i].x*a[i].x) + (a[i].z*a[i].z),1));
         }
         return m.determinant<0;
     }
