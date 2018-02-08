@@ -201,8 +201,7 @@ public class Face : System.IEquatable<Face>, IBounds, IComparable<Face> {
 	        double minimumAngle = 999;
 
             // find ear to clip
-            for (int i = 0; i < halfedges.Count; i++)
-            {
+            for (int i = 0; i < halfedges.Count; i++) {
                 var he1 = halfedges[i];
                 var he2 = he1.next;
                 var dir1 = he1.GetDirection();

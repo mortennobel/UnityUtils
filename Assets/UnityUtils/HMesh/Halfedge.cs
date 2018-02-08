@@ -184,7 +184,7 @@ public class Halfedge : System.IEquatable<Halfedge>, IBounds, IComparable<Halfed
         var vertToKeep = vert;
         var vertToDestroy = prev.vert;
 #if HMDebug
-        Debug.Assert(CollapsePrecondition(),"CollapsePrecondition failed");
+        Debug.Assert(CollapsePrecondition()==CollapsePreconditionReason.Ok,"CollapsePrecondition failed. Was "+CollapsePrecondition());
 #endif
         var oppHe = opp;
         var oppFace = opp != null?opp.face:null;

@@ -691,7 +691,6 @@ public class HMesh {
     }
 
     public Mesh Export(bool faceIndexAsSubmeshes = false){
-
 		Mesh res = new Mesh();
 		Vector3[] vertexArray = new Vector3[vertices.Count];
 		Vector2[] uv1 = new Vector2[vertices.Count];
@@ -756,13 +755,6 @@ public class HMesh {
                 }
             }
 
-            string s = "";
-            foreach (var i in triangles.ToArray()){
-                s+= i+", ";
-            }
-            Debug.Log("Exporting triangles "+s+" count "+triangles.Count);
-
-            Debug.Log("Vertices "+vertices.Count);
             res.SetTriangles(triangles.ToArray(),0);
 	    }
 	    res.RecalculateBounds();

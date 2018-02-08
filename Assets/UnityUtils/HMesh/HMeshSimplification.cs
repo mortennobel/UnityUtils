@@ -125,7 +125,7 @@ public static class HMeshSimplification {
 #if HMDebug                
                 var str = face.ToString();
                 var debugFaceExp = face.ExportLocalNeighbourhoodToObj();
-                StringWriter sw = new StringWriter();
+                System.IO.StringWriter sw = new System.IO.StringWriter();
                 var res = face.Triangulate(false, sw);
 #else
                 var res = face.Triangulate();
@@ -531,7 +531,6 @@ public static class HMeshSimplification {
                                 if (!hmesh.IsValid())
                                 {
                                     Debug.Log("Invalid");
-                                    Debug.LogError(str);
                                     Debug.LogError(collapseStr);
                                 }
 #endif
