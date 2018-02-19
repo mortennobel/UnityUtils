@@ -326,6 +326,7 @@ public class Face : System.IEquatable<Face>, IBounds, IComparable<Face> {
                 var he2 = he1.next;
 
                 var newFace = face.Cut(he1.prev.vert, he2.vert);
+                newFace.label = label;
                 res.Add(newFace);
                 if (newFace.Circulate().Count > 3)
                 {
