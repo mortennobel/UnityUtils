@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using SimpleJSON;
+using UnityEngine.Rendering;
 
 public enum HMeshValidationRules
 {
@@ -504,7 +505,7 @@ public class HMesh {
     /// is added to the used material.
     /// Is a mesh does not contain any vertices it is skipped.
     /// </summary>
-    public List<Mesh> ExportSplit(Vector3i axisSplit, List<List<int>> usedMaterials = null, double sharpEdgeAngle = 360)
+    public List<Mesh> ExportSplit(Vector3i axisSplit, List<List<int>> usedMaterials = null, double sharpEdgeAngle = 360, IndexFormat indexFormat = IndexFormat.UInt16)
     {
         var bounds = ComputeBoundsD();
 
@@ -551,6 +552,7 @@ public class HMesh {
                     var max = new Vector3D(maxX, maxY, maxZ);
 
                     var res = new Mesh();
+	                res.indexFormat = indexFormat;
                     res.name = "HMesh_" + i + "," + j + "," + k;
                     var vertexArray = new List<Vector3>();
                     var normalArray = new List<Vector3>();
@@ -690,8 +692,9 @@ public class HMesh {
         return resList;
     }
 
-    public Mesh Export(bool faceIndexAsSubmeshes = false){
+    public Mesh Export(bool faceIndexAsSubmeshes = false, IndexFormat indexFormat = IndexFormat.UInt16){
 		Mesh res = new Mesh();
+	    res.indexFormat = indexFormat;
 		Vector3[] vertexArray = new Vector3[vertices.Count];
 		Vector2[] uv1 = new Vector2[vertices.Count];
 		Vector2[] uv2 = new Vector2[vertices.Count];
