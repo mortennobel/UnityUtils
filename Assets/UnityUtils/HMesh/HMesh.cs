@@ -496,10 +496,51 @@ public class HMesh {
 		}
 
 		SplitNonManifoldVertices();
-
 	}
 
-    /// <summary>
+	// Creates a new HMesh where sharp edges and materials (defined by face labels) results in edge splits 
+	public HMesh Split(bool splitByFaceLabel = true, double sharpEdgeAngle = 360)
+	{
+		// todo replace dummy implementation
+		// currently returns fully partitioned mesh
+		HMesh newHMesh = new HMesh();
+		foreach (var face in GetFacesRaw())
+		{
+			var newFace = newHMesh.CreateFace();
+			newFace.label = face.label;
+			var edges = face.Circulate();
+			var edgeList = new Halfedge[edges.Count];
+			var vertexList = new Vertex[edges.Count];
+			for (int i = 0; i < edges.Count; i++)
+			{
+				var newEdge = newHMesh.CreateHalfedge();
+				var newVertex = newHMesh.CreateVertex(edges[i].vert.positionD);
+				
+				edgeList[i] = newEdge;
+				vertexList[i] = newVertex;
+				
+				if (i > 0)
+				{
+					edgeList[i-1].Link(edgeList[i]);	
+				}
+				if (i == edges.Count - 1)
+				{
+					edgeList[i].Link(edgeList[0]);
+				}
+
+				newEdge.Link(newFace);
+			}
+
+			for (int i = 0; i < edgeList.Length; i++)
+			{
+				edgeList[i].vert = vertexList[i];
+			}
+		}
+
+		return newHMesh;
+	}
+
+	/// <summary>
     /// Export the HMesh as a number of meshes, split into a number of subregions.
     /// If the parameter used material is provided, the mesh only contains submeshes with geometry and the submesh index
     /// is added to the used material.

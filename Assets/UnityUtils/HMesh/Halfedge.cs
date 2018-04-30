@@ -259,7 +259,7 @@ public class Halfedge : System.IEquatable<Halfedge>, IBounds, IComparable<Halfed
     /// <returns></returns>
     public Vector3D GetDirection()
     {
-        return vert.positionD - prev.vert.positionD;
+	    return vert.positionD - prev.vert.positionD;
     }
 
 
@@ -495,13 +495,14 @@ public class Halfedge : System.IEquatable<Halfedge>, IBounds, IComparable<Halfed
 
 
     private static Halfedge NextBoundaryEdge(Halfedge he){
-	    
         var h = he;
+
 	    while (h.next.opp != null)
 	    {
 		    h = h.next.opp;
 		    Debug.Assert(h != he);
 	    }
+	    
 	    return h.next;
     }
 

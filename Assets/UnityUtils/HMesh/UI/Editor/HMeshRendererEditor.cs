@@ -477,13 +477,10 @@ public class HMeshRendererEditor : Editor  {
 	        Debug.Log(myTarget.hmesh.CreateDebugData());
 	    }
 
-	    if (GUILayout.Button("Split 2x1x2"))
+	    if (GUILayout.Button("Export Split 2x1x2"))
 	    {
-	        var hmesh = EarClipTestEditor.CreateTestMeshPolygon(myTarget.GetComponent<EarClipTest>());
-	        foreach (var f in hmesh.GetFaces()){
-	            EarClipping.Tesselate(f);
-	        }
-	        var meshes = hmesh.ExportSplit(new Vector3i(2,1,2));
+		    var hmesh = myTarget.hmesh;
+	        var meshes = hmesh.ExportSplit(new Vector3i(2,1,2), null, 30);
 	        foreach (var mesh in meshes)
 	        {
 	            GameObject go = new GameObject("SplitMesh");
@@ -496,11 +493,35 @@ public class HMeshRendererEditor : Editor  {
 	        }
 	    }
 
-	    if (GUILayout.Button("Export OBJ"))
+	    if (GUILayout.Button("Split (edge/material)"))
+	    {
+
+		    var hmesh = myTarget.hmesh;
+		    var splitHMesh = hmesh.Split();
+		    
+		    Debug.Log("str1:" + splitHMesh.CreateDebugData());
+		    Debug.Log("Mesh valid "+splitHMesh.IsValid());
+		    Debug.Assert(splitHMesh.IsValid());
+		    var meshes = splitHMesh.ExportSplit(new Vector3i(1, 1, 1)); 
+		    foreach (var mesh in meshes)
+		    {
+			    GameObject go = new GameObject("SplitMesh");
+			    var mr = go.AddComponent<MeshRenderer>();
+			    var mat = new Material(Shader.Find("Standard"));
+			    mat.color = Color.white;
+			    mr.material = mat;
+			    var mf = go.AddComponent<MeshFilter>();
+			    mf.mesh = mesh;
+		    }
+	    }
+		
+		if (GUILayout.Button("Export OBJ"))
 	    {
 
 	        var fileObj = myTarget.hmesh.ExportObj();
 	        File.WriteAllText("/Users/mnob/Desktop/export-obj.obj", fileObj);
 	    }
+		
+		
 	}
 }
