@@ -90,8 +90,13 @@ public class LineSegment  {
         pos1 = o1 + d1 * t1;
         pos2 = o2 + d2 * t2;
         parallel = false;
-        return Mathf.Approximately((float)pos1.x, (float)pos2.x) && Mathf.Approximately((float)pos1.y, (float)pos2.y) &&
-               Mathf.Approximately((float)pos1.z, (float)pos2.z) && t1 >=0 && t1 <=  (second - first).magnitude && t2 >=0 && t2 <=  (other.second - other.first).magnitude;
+        return Mathf.Approximately((float)pos1.x, (float)pos2.x) && 
+               Mathf.Approximately((float)pos1.y, (float)pos2.y) &&
+               Mathf.Approximately((float)pos1.z, (float)pos2.z) && 
+               t1 >=0 && 
+               t2 >=0 &&
+               t1*t1 <= (second - first).sqrMagnitude &&  
+               t2*t2 <= (other.second - other.first).sqrMagnitude;
 
     }
 
@@ -105,17 +110,26 @@ public class LineSegment  {
 	{
 		Vector3D rhs = point - lineStart;
 		Vector3D vector3 = lineEnd - lineStart;
-		double magnitude = vector3.magnitude;
+		double magnitude2 = vector3.sqrMagnitude;
 		Vector3D lhs = vector3;
-		if ((double) magnitude > 9.99999997475243E-07)
-			lhs /= magnitude;
-		double num = System.Math.Min(System.Math.Max(Vector3D.Dot(lhs, rhs), 0.0), magnitude);
-		return lineStart + lhs * num;
+		if ( magnitude2 < 9.99999997475243E-07)
+		{
+			return lineStart; // line has zero magnitude - just return start position
+		}
+
+		double dotProduct = Vector3D.Dot(lhs, rhs);
+		double num = System.Math.Min(System.Math.Max(dotProduct, 0.0), magnitude2);
+		return lineStart + lhs * num/magnitude2;
 	}
 
 	double DistancePointLine(Vector3D point, Vector3D lineStart, Vector3D lineEnd)
 	{
 		return Vector3D.Magnitude(ProjectPointLine(point, lineStart, lineEnd) - point);
+	}
+
+	public Vector3D ProjectPoint(Vector3D point)
+	{
+		return ProjectPointLine(point, first, second);
 	}
 
 	public double DistancePoint(Vector3D point)
