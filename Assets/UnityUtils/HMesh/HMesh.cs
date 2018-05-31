@@ -532,18 +532,18 @@ public class HMesh {
 	// Creates a new HMesh where sharp edges and materials (defined by face labels) results in edge splits 
 	public HMesh Split(bool splitByFaceLabel = true, double sharpEdgeAngle = 360)
 	{
-
 		MarkSharpEdges(sharpEdgeAngle);
 		if (splitByFaceLabel){
 			MarkSharpEdgesByLabel();
 		}
 		
-		Dictionary<Halfedge, Halfedge> oldToNewEdge = new Dictionary<Halfedge, Halfedge>();
+		Halfedge[] oldIdToNewEdge = new Halfedge[halfedgeMaxId+1];
+		
 		// main concept:
 		// halfedges with label != 0 should not be glued together
 		// A vertex should be split into multiple vertices and assigned to regions of halfedges. 
 		// a pair of the max outgoing he id for a single side and the vertex id
-		Dictionary<int, Vertex> splitVertex = new Dictionary<int, Vertex>();
+		Vertex[] splitVertex = new Vertex[halfedgeMaxId+1];
 		HMesh newHMesh = new HMesh();
 		
 		var findOrCreateVertex = new Func<Halfedge, Vertex>(delegate(Halfedge he){
@@ -562,8 +562,8 @@ public class HMesh {
 				maxId = Mathf.Max(h.id, maxId);
 			}
 
-			Vertex res;
-			if (splitVertex.TryGetValue(maxId, out res) == false)
+			Vertex res = splitVertex[maxId];
+			if (res == null)
 			{
 				res = newHMesh.CreateVertex(he.vert.positionD);
 				res.label = he.vert.label;
@@ -586,7 +586,7 @@ public class HMesh {
 			for (int i = 0; i < edges.Count; i++)
 			{
 				var newEdge = newHMesh.CreateHalfedge();
-				oldToNewEdge.Add(edges[i], newEdge);
+				oldIdToNewEdge[edges[i].id] = newEdge;
 				var newVertex = findOrCreateVertex(edges[i]);
 				
 				edgeList[i] = newEdge;
@@ -613,8 +613,8 @@ public class HMesh {
 		{
 			if (oldHE.opp == null || oldHE.label != 0) continue;
 			if (oldHE.opp.id< oldHE.id) continue; // only glue one way
-			var newHe = oldToNewEdge[oldHE];
-			var newHeOpp = oldToNewEdge[oldHE.opp];
+			var newHe = oldIdToNewEdge[oldHE.id];
+			var newHeOpp = oldIdToNewEdge[oldHE.opp.id];
 			newHe.Glue(newHeOpp);
 		}
 		return newHMesh;
