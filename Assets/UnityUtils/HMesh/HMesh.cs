@@ -932,10 +932,34 @@ public class HMesh {
 		return res;
 	}
 
-	public bool Destroy(Face face){
+	public bool Destroy(Face face, bool includeHalfedgesAndVertices = false){
 	    Debug.Assert(face != null);
 	    Debug.Assert(face.hmesh == this);
 		Debug.Assert(!face.IsDestroyed(), "Face already destroyed");
+
+		if (includeHalfedgesAndVertices){
+			var hes = face.Circulate();
+			// delete vertices
+			foreach (var he in hes)
+			{
+				var vert = he.vert;
+				var vertCirc = vert.Circulate();
+				int valency = vertCirc.Count; 
+				if (valency == 1)
+				{
+					Destroy(vert);
+				}
+			}
+			foreach (var he in hes)
+			{
+				if (he.opp != null)
+				{
+					he.opp.opp = null;
+				}
+				Destroy(he);
+			}
+		}
+		
 		bool res = faces.Remove(face);
 	    if (res)
 	    {

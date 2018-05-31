@@ -593,6 +593,16 @@ public class HMeshRendererEditor : Editor  {
 		    }*/
 	    }
 		
+		if (GUILayout.Button("Delete random face"))
+		{
+
+			var hmesh = myTarget.hmesh;
+			var faces = hmesh.GetFacesRaw();
+			var faceToDelete = faces[Random.Range(0, faces.Count)];
+			hmesh.Destroy(faceToDelete, true);
+			Debug.Log(hmesh.IsValid());
+		}
+		
 		if (GUILayout.Button("Export OBJ"))
 	    {
 
