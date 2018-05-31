@@ -433,6 +433,82 @@ public class HMeshRendererEditor : Editor  {
 	        myTarget.UpdateMesh();
 	        Debug.Log(myTarget.hmesh.CreateDebugData());
 	    }
+		if (GUILayout.Button("Build from obj - cube"))
+		{
+			string objTest = "# Blender v2.79 (sub 0) OBJ File: ''\n"+
+			"# www.blender.org\n"+
+			"o Cube\n"+
+			"v 1.000000 -1.000000 -1.000000\n"+
+			"v 1.000000 -1.000000 1.000000\n"+
+			"v -1.000000 -1.000000 1.000000\n"+
+			"v -1.000000 -1.000000 -1.000000\n"+
+			"v 1.000000 1.000000 -0.999999\n"+
+			"v 0.999999 1.000000 1.000001\n"+
+			"v -1.000000 1.000000 1.000000\n"+
+			"v -1.000000 1.000000 -1.000000\n"+
+			"vn 0.0000 -1.0000 0.0000\n"+
+			"vn 0.0000 1.0000 0.0000\n"+
+			"vn 1.0000 0.0000 0.0000\n"+
+			"vn -0.0000 -0.0000 1.0000\n"+
+			"vn -1.0000 -0.0000 -0.0000\n"+
+			"vn 0.0000 0.0000 -1.0000\n"+
+			"s off\n"+
+			"f 1//1 2//1 3//1 4//1\n"+
+			"f 5//2 8//2 7//2 6//2\n"+
+			"f 1//3 5//3 6//3 2//3\n"+
+			"f 2//4 6//4 7//4 3//4\n"+
+			"f 3//5 7//5 8//5 4//5\n"+
+			"f 5//6 1//6 4//6 8//6\n"+
+			"";
+
+
+	        myTarget.hmesh = new HMesh();
+	        myTarget.hmesh.BuildFromObj(objTest);
+
+	        myTarget.hmesh.IsValid();
+	        myTarget.UpdateMesh();
+	        Debug.Log(myTarget.hmesh.CreateDebugData());
+	    }
+		if (GUILayout.Button("Build from obj - cube smooth"))
+		{
+			string objTest = "# Blender v2.79 (sub 0) OBJ File: ''\n"+
+			"# www.blender.org\n"+
+			"mtllib cube.mtl\n"+
+			"o Cube\n"+
+			"v 1.000000 -1.000000 -1.000000\n"+
+			"v 1.000000 -1.000000 1.000000\n"+
+			"v -1.000000 -1.000000 1.000000\n"+
+			"v -1.000000 -1.000000 -1.000000\n"+
+			"v 1.000000 1.000000 -0.999999\n"+
+			"v 0.999999 1.000000 1.000001\n"+
+			"v -1.000000 1.000000 1.000000\n"+
+			"v -1.000000 1.000000 -1.000000\n"+
+			"vn 0.5773 -0.5773 -0.5773\n"+
+			"vn 0.5773 -0.5773 0.5773\n"+
+			"vn -0.5773 -0.5773 0.5773\n"+
+			"vn -0.5773 -0.5773 -0.5773\n"+
+			"vn 0.5773 0.5773 -0.5773\n"+
+			"vn -0.5773 0.5773 -0.5773\n"+
+			"vn -0.5773 0.5773 0.5773\n"+
+			"vn 0.5773 0.5773 0.5773\n"+
+			"usemtl Material\n"+
+			"s 1\n"+
+			"f 1//1 2//2 3//3 4//4\n"+
+			"f 5//5 8//6 7//7 6//8\n"+
+			"f 1//1 5//5 6//8 2//2\n"+
+			"f 2//2 6//8 7//7 3//3\n"+
+			"f 3//3 7//7 8//6 4//4\n"+
+			"f 5//5 1//1 4//4 8//6\n"+
+			"";
+
+
+	        myTarget.hmesh = new HMesh();
+	        myTarget.hmesh.BuildFromObj(objTest);
+
+	        myTarget.hmesh.IsValid();
+	        myTarget.UpdateMesh();
+	        Debug.Log(myTarget.hmesh.CreateDebugData());
+	    }
 	    if (GUILayout.Button("Build from obj - test"))
 	    {
 	        string objTest = myTarget.objfile;
@@ -497,13 +573,15 @@ public class HMeshRendererEditor : Editor  {
 	    {
 
 		    var hmesh = myTarget.hmesh;
-		    var splitHMesh = hmesh.Split();
+		    var splitHMesh = hmesh.Split(true, 89);
 		    
 		    Debug.Log("str1:" + splitHMesh.CreateDebugData());
 		    Debug.Log("Mesh valid "+splitHMesh.IsValid());
-		    Debug.Assert(splitHMesh.IsValid());
-		    var meshes = splitHMesh.ExportSplit(new Vector3i(1, 1, 1)); 
-		    foreach (var mesh in meshes)
+		    var fileObj = splitHMesh.ExportObj();
+		    File.WriteAllText("/Users/mnob/Desktop/export-obj.obj", fileObj);
+		    //Debug.Assert(splitHMesh.IsValid());
+		    //var meshes = splitHMesh.ExportSplit(new Vector3i(1, 1, 1)); 
+		    /*foreach (var mesh in meshes)
 		    {
 			    GameObject go = new GameObject("SplitMesh");
 			    var mr = go.AddComponent<MeshRenderer>();
@@ -512,7 +590,7 @@ public class HMeshRendererEditor : Editor  {
 			    mr.material = mat;
 			    var mf = go.AddComponent<MeshFilter>();
 			    mf.mesh = mesh;
-		    }
+		    }*/
 	    }
 		
 		if (GUILayout.Button("Export OBJ"))

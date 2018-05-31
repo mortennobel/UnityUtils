@@ -243,6 +243,8 @@ public struct Vector3D {
 
 	
 	// Return the angle in degrees between from and to
+	// The angle returned is the unsigned acute angle between the two vectors.
+	// This means the smaller of the two possible angles between the two vectors is used. The result is never greater than 180 degrees.
     public static double Angle(Vector3D from, Vector3D to)
     {
         return Math.Acos(Math.Max(Math.Min(Dot(from.normalized, to.normalized), 1f),-1)) * 57.295779513082321;

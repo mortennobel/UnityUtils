@@ -8,6 +8,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Configuration;
 using System.Text;
 using SimpleJSON;
 using UnityEngine.Rendering;
@@ -106,6 +107,27 @@ public class HMesh {
 			int label = edgeAngle <= angle ? 0 : 1;
 			he.label = label;
 			he.opp.label = label;
+		}
+	}
+	
+	/// <summary>
+	/// Set label to all edges to 1 if opp.face.label != face.label
+	/// </summary>
+	public void MarkSharpEdgesByLabel()
+	{
+		foreach (var he in halfedges)
+		{
+			if (he.IsBoundary())
+			{
+				continue;
+			}
+			if (he.opp.id < he.id) continue;
+
+			bool differentLabel = he.opp.face.label != he.face.label;
+			if (differentLabel){
+				he.label = 1;
+				he.opp.label = 1;
+			}
 		}
 	}
 
@@ -498,15 +520,65 @@ public class HMesh {
 		SplitNonManifoldVertices();
 	}
 
+	/// <summary>
+	/// Split edges (and vertices) if
+	/// 	angle between faces is less than sharpEdgeAngle
+	/// 	or if face ids are different (when splitByFaceId is true)
+	/// Note that this will not preserve the edge labels nor face labels 
+	/// </summary>
+	/// <param name="sharpEdgeAngle"></param>
+	/// <param name="splitByFaceId"></param>
+
 	// Creates a new HMesh where sharp edges and materials (defined by face labels) results in edge splits 
 	public HMesh Split(bool splitByFaceLabel = true, double sharpEdgeAngle = 360)
 	{
-		// todo replace dummy implementation
-		// currently returns fully partitioned mesh
+
+		MarkSharpEdges(sharpEdgeAngle);
+		if (splitByFaceLabel){
+			MarkSharpEdgesByLabel();
+		}
+		
+		Dictionary<Halfedge, Halfedge> oldToNewEdge = new Dictionary<Halfedge, Halfedge>();
+		// main concept:
+		// halfedges with label != 0 should not be glued together
+		// A vertex should be split into multiple vertices and assigned to regions of halfedges. 
+		// a pair of the max outgoing he id for a single side and the vertex id
+		Dictionary<int, Vertex> splitVertex = new Dictionary<int, Vertex>();
 		HMesh newHMesh = new HMesh();
+		
+		var findOrCreateVertex = new Func<Halfedge, Vertex>(delegate(Halfedge he){
+			// find maximum ingoing he
+			var h = he;
+			// rewind
+			while (h.opp != null && h.label == 0 && h.opp.prev != he)
+			{
+				h = h.opp.prev;
+			}
+			int maxId = h.id;
+			var first = h;
+			while (h.next.opp != null && h.next.label == 0 && h.next.opp != first)
+			{
+				h = h.next.opp;
+				maxId = Mathf.Max(h.id, maxId);
+			}
+
+			Vertex res;
+			if (splitVertex.TryGetValue(maxId, out res) == false)
+			{
+				res = newHMesh.CreateVertex(he.vert.positionD);
+				res.label = he.vert.label;
+				res.uv1 = he.vert.uv1;
+				res.uv2 = he.vert.uv2;
+				splitVertex[maxId] = res;
+			}
+
+			return res;
+		});
+		
 		foreach (var face in GetFacesRaw())
 		{
-			var newFace = newHMesh.CreateFace();
+			// copy the face and half edges
+			Face newFace = newHMesh.CreateFace();
 			newFace.label = face.label;
 			var edges = face.Circulate();
 			var edgeList = new Halfedge[edges.Count];
@@ -514,7 +586,8 @@ public class HMesh {
 			for (int i = 0; i < edges.Count; i++)
 			{
 				var newEdge = newHMesh.CreateHalfedge();
-				var newVertex = newHMesh.CreateVertex(edges[i].vert.positionD);
+				oldToNewEdge.Add(edges[i], newEdge);
+				var newVertex = findOrCreateVertex(edges[i]);
 				
 				edgeList[i] = newEdge;
 				vertexList[i] = newVertex;
@@ -536,9 +609,18 @@ public class HMesh {
 				edgeList[i].vert = vertexList[i];
 			}
 		}
-
+		foreach (var oldHE in GetHalfedgesRaw())
+		{
+			if (oldHE.opp == null || oldHE.label != 0) continue;
+			if (oldHE.opp.id< oldHE.id) continue; // only glue one way
+			var newHe = oldToNewEdge[oldHE];
+			var newHeOpp = oldToNewEdge[oldHE.opp];
+			newHe.Glue(newHeOpp);
+		}
 		return newHMesh;
 	}
+
+	
 
 	/// <summary>
     /// Export the HMesh as a number of meshes, split into a number of subregions.

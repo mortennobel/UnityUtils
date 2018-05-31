@@ -352,7 +352,7 @@ public class Halfedge : System.IEquatable<Halfedge>, IBounds, IComparable<Halfed
 		face.halfedge = this;
 	}
 
-    // Split and edge and cut adjacent faces with the new vertex.
+    // Split an edge and cut adjacent faces with the new vertex.
     // E.g. splitting a shared on two triangles with result in four triangles
     public Vertex SplitAndCut(out Face[] newFaces,double splitFraction  = 0.5f)
     {
